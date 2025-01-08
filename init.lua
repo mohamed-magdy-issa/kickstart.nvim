@@ -155,7 +155,10 @@ vim.opt.inccommand = 'split'
 vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 10
+vim.opt.scrolloff = 5
+
+-- Disable banner form netrw
+vim.g.netrw_banner = 0
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
@@ -176,10 +179,10 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- TIP: Disable arrow keys in normal mode
--- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
--- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
--- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
--- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
+vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
+vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
+vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
@@ -276,7 +279,7 @@ require('lazy').setup({
     opts = {
       -- delay between pressing a key and opening which-key (milliseconds)
       -- this setting is independent of vim.opt.timeoutlen
-      delay = 0,
+      delay = 1000,
       icons = {
         -- set icon mappings to true if you have a Nerd Font
         mappings = vim.g.have_nerd_font,
@@ -868,6 +871,12 @@ require('lazy').setup({
       --  - ci'  - [C]hange [I]nside [']quote
       require('mini.ai').setup { n_lines = 500 }
 
+      -- Examples:
+      -- - gcc  - comment all line
+      -- - gciw - comment inner word
+      -- - dgc  - delete whole comment block
+      require('mini.comment').setup()
+
       -- Add/delete/replace surroundings (brackets, quotes, etc.)
       --
       -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
@@ -930,10 +939,10 @@ require('lazy').setup({
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
   -- require 'kickstart.plugins.debug',
-  -- require 'kickstart.plugins.indent_line',
+  require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
-  -- require 'kickstart.plugins.autopairs',
-  -- require 'kickstart.plugins.neo-tree',
+  require 'kickstart.plugins.autopairs',
+  require 'kickstart.plugins.neo-tree',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
