@@ -15,11 +15,17 @@ return {
   },
   opts = {
     filesystem = {
+      filtered_items = {
+        visible = true,
+        hide_dotfiles = false,
+        hide_gitignored = true,
+      },
       window = {
         mappings = {
           ['\\'] = 'close_window',
         },
       },
+      group_empty_dirs = true, -- This will group empty directories together
     },
   },
 }
