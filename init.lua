@@ -415,7 +415,36 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
-      vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+
+      -- Add option to delete buffers from the buffer selection window using <c-u>
+      -- To select multiple files you can use Tab
+      local action_state = require 'telescope.actions.state'
+      local actions = require 'telescope.actions'
+      vim.keymap.set('n', '<leader><leader>', function(opts)
+        opts = opts or {}
+        opts.attach_mappings = function(prompt_bufnr, map)
+          local delete_buf = function()
+            local current_picker = action_state.get_current_picker(prompt_bufnr)
+            local multi_selections = current_picker:get_multi_selection()
+
+            if next(multi_selections) == nil then
+              local selection = action_state.get_selected_entry()
+              actions.close(prompt_bufnr)
+              vim.api.nvim_buf_delete(selection.bufnr, { force = false })
+            else
+              actions.close(prompt_bufnr)
+              for _, selection in ipairs(multi_selections) do
+                vim.api.nvim_buf_delete(selection.bufnr, { force = false })
+              end
+            end
+          end
+
+          map('i', '<c-u>', delete_buf)
+          return true
+        end
+
+        builtin.buffers(opts)
+      end, { noremap = true, desc = '[ ] Find existing buffers' })
 
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
