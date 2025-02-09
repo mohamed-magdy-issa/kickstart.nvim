@@ -101,9 +101,10 @@ vim.g.have_nerd_font = false
 -- Make line numbers default
 vim.opt.number = true
 vim.opt.relativenumber = true
--- You can also add relative line numbers, to help with jumping.
---  Experiment for yourself to see if you like it!
--- vim.opt.relativenumber = true
+
+-- Make delete and change default behavior to send to the black hole register
+vim.keymap.set('n', 'd', '"_d', { noremap = true })
+vim.keymap.set('n', 'c', '"_c', { noremap = true })
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
