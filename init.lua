@@ -473,6 +473,44 @@ require('lazy').setup({
           prompt_title = 'Find Files neovim',
         }
       end, { desc = '[S]earch [N]eovim files' })
+
+      -- Shortcut for searching my disco notes
+      vim.keymap.set('n', '<leader>st', function()
+        builtin.find_files {
+          cwd = '/Users/mohamed-issa/Documents/work/DISCO/',
+          prompt_title = 'Find Files DISCO Notes',
+          attach_mappings = function(prompt_bufnr, map)
+            actions.select_default:replace(function()
+              actions.close(prompt_bufnr)
+              local selection = action_state.get_selected_entry()
+
+              -- Create a new buffer
+              local buf = vim.api.nvim_create_buf(false, true)
+
+              -- Open the buffer in a floating window
+              local win = vim.api.nvim_open_win(buf, true, {
+                relative = 'editor',
+                width = math.floor(vim.o.columns * 0.8),
+                height = math.floor(vim.o.lines * 0.8),
+                row = math.floor(vim.o.lines * 0.1),
+                col = math.floor(vim.o.columns * 0.1),
+                style = 'minimal',
+                border = 'rounded',
+              })
+
+              -- Load the selected file into the buffer
+              vim.cmd('edit ' .. selection.path)
+
+              -- Set buffer options
+              vim.api.nvim_buf_set_option(buf, 'bufhidden', 'wipe') -- Automatically wipe buffer when closed
+
+              -- Map <Esc> to close the floating window and wipe the buffer
+              vim.api.nvim_buf_set_keymap(buf, 'n', '<Esc>', '<Cmd>bd!<CR>', { noremap = true, silent = true })
+            end)
+            return true
+          end,
+        }
+      end, { desc = '[S]earch Disco No[T]es' })
     end,
   },
 
