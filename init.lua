@@ -501,8 +501,12 @@ require('lazy').setup({
               -- Load the selected file into the buffer
               vim.cmd('edit ' .. selection.path)
 
-              -- Set buffer options
-              vim.api.nvim_buf_set_option(buf, 'bufhidden', 'wipe') -- Automatically wipe buffer when closed
+              -- Set buffer-local options using `vim.bo`
+              vim.bo[buf].bufhidden = 'wipe' -- Automatically wipe buffer when closed
+
+              -- Set window-local options using `vim.wo`
+              vim.wo[win].number = true -- Enable line numbers
+              vim.wo[win].relativenumber = true -- Enable relative line numbers
 
               -- Map <Esc> to close the floating window and wipe the buffer
               vim.api.nvim_buf_set_keymap(buf, 'n', '<Esc>', '<Cmd>bd<CR>', { noremap = true, silent = true })
