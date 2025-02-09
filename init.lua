@@ -505,7 +505,7 @@ require('lazy').setup({
               vim.api.nvim_buf_set_option(buf, 'bufhidden', 'wipe') -- Automatically wipe buffer when closed
 
               -- Map <Esc> to close the floating window and wipe the buffer
-              vim.api.nvim_buf_set_keymap(buf, 'n', '<Esc>', '<Cmd>bd!<CR>', { noremap = true, silent = true })
+              vim.api.nvim_buf_set_keymap(buf, 'n', '<Esc>', '<Cmd>bd<CR>', { noremap = true, silent = true })
             end)
             return true
           end,
