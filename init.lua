@@ -103,7 +103,6 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 
 -- Make delete and change default behavior to send to the black hole register
-vim.keymap.set('n', 'd', '"_d', { noremap = true })
 vim.keymap.set('n', 'c', '"_c', { noremap = true })
 
 -- Enable mouse mode, can be useful for resizing splits for example!
