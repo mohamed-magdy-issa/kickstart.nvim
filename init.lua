@@ -497,6 +497,10 @@ require('lazy').setup({
                 border = 'rounded',
               })
 
+              vim.schedule(function()
+                vim.opt.clipboard = 'unnamedplus'
+              end)
+
               -- Load the selected file into the buffer
               vim.cmd('edit ' .. selection.path)
 
