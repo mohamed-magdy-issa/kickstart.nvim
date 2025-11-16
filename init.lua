@@ -102,8 +102,10 @@ vim.g.have_nerd_font = false
 vim.opt.number = true
 vim.opt.relativenumber = true
 
--- Make delete and change default behavior to send to the black hole register
+-- Make 'c' in normal mode send changed text to the black hole register
 vim.keymap.set('n', 'c', '"_c', { noremap = true })
+-- Make 'p' in visual mode send replaced text to the black hole register
+vim.keymap.set('x', 'p', '"_dP', { noremap = true })
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
@@ -384,19 +386,26 @@ require('lazy').setup({
       -- [[ Configure Telescope ]]
       -- See `:help telescope` and `:help telescope.setup()`
       require('telescope').setup {
-        -- You can put your default mappings / updates / etc. in here
-        --  All the info you're looking for is in `:help telescope.setup()`
-        --
-        defaults = require('telescope.themes').get_dropdown {
+        defaults = {
+          wrap_results = true, -- Enable line wrapping in the results window
           path_display = { 'smart' }, -- Abbreviates paths intelligently
+
+          -- Apply dropdown theme with its own settings
+          theme = 'dropdown',
         },
-        -- pickers = {}
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
           },
         },
       }
+
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'TelescopePreviewerLoaded',
+        callback = function()
+          vim.wo.wrap = true
+        end,
+      })
 
       -- Enable Telescope extensions if they are installed
       pcall(require('telescope').load_extension, 'fzf')

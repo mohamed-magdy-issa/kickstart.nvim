@@ -14,6 +14,19 @@ return {
     { '\\', ':Neotree reveal<CR>', desc = 'NeoTree reveal', silent = true },
   },
   opts = {
+    window = {
+      position = 'left',
+      width = 40,
+      mapping_options = {
+        noremap = true,
+        nowait = true,
+      },
+      mappings = {
+        ['\\'] = 'close_window',
+      },
+      use_linenumbers = true,
+      line_number_style = 'relative', -- "none" | "absolute" | "relative"
+    },
     filesystem = {
       filtered_items = {
         visible = true,
